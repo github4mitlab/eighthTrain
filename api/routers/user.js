@@ -1,34 +1,38 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userModel = require("../models/user");
 
 // Rgister User
-
 router.post("/signup", (req, res) => {
-    console.log("here");
-    const user = new userModel({
-        _id: new mongoose.Types.ObjectId(),
-        email: req.body.email,
-        password: req.body.password
-    });
-  
-    
-    user
-    .save()
-    .then( result => {
-        console.log(result);
-        res.status(200).json({
-            usr_msg: "사용자 등록됨"
-        });
-        console.log("here2");
-    })
-    .catch( err => {
-        console.log(err);
-        res.status(500).json({
-            usr_err: err
-        });
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if (err) {
+            return res.status(500).json({
+                usr_err: err
+            });
+        } else {
+            const user = new userModel({
+                _id: new mongoose.Types.ObjectId(),
+                email: req.body.email,
+                password: hash
+            });
+            user
+            .save(             console.log("SAVE is done") )
+            .then( result => {
+                console.log(result);
+                res.status(200).json({
+                    usr_msg: "사용자 등록됨"
+                });
+            })
+            .catch( err => {
+                console.log(err);
+                res.status(500).json({
+                    usr_err: err
+                });
+            });
+        }
     });
 });
 
