@@ -1,0 +1,30 @@
+{
+  "name": "eighttrain",
+  "version": "1.0.0",
+  "description": "nodejs study",
+  "main": "server.js",
+  "scripts": {
+    "test": "start",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maylee/fifthTrain.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "maylee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maylee/fifthTrain/issues"
+  },
+  "homepage": "https://github.com/maylee/fifthTrain#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.16.4",
+    "mongoose": "^5.5.5",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.0"
+  }
+}
