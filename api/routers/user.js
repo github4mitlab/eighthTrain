@@ -7,33 +7,45 @@ const userModel = require("../models/user");
 
 // Rgister User
 router.post("/signup", (req, res) => {
-    bcrypt.hash(req.body.password, 10, (err, hash) => {
-        if (err) {
+  userModel
+    .find({ email: req.body.email})
+    .exec()
+    .then(user => {
+      if (user.length >= 1) {
+        return res.status(409).json({
+          usr_err: "메일이 있습니다."
+        });
+      } else {
+        bcrypt.hash(req.body.password, 10, (err, hash) => {
+          if (err) {
             return res.status(500).json({
-                usr_err: err
+              usr_err: err
             });
-        } else {
+          } else {
             const user = new userModel({
-                _id: new mongoose.Types.ObjectId(),
-                email: req.body.email,
-                password: hash
+              _id: new mongoose.Types.ObjectId(),
+              email: req.body.email,
+              password: hash
             });
             user
-            .save(             console.log("SAVE is done") )
-            .then( result => {
+              .save(console.log("SAVE is done"))
+              .then(result => {
                 console.log(result);
                 res.status(200).json({
-                    usr_msg: "사용자 등록됨"
+                  usr_msg: "사용자 등록됨"
                 });
-            })
-            .catch( err => {
+              })
+              .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    usr_err: err
+                  usr_err: err
                 });
-            });
-        }
-    });
+              });
+          }
+        });
+      }
+    })
+    .catch();
 });
 
 module.exports = router;
